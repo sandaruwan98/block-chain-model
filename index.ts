@@ -81,6 +81,7 @@ class Chain {
         }
 
     }
+
 }
 
 
@@ -111,5 +112,17 @@ class Wallet {
 }
 
 
+// Example usage
+
+const lakshan = new Wallet();
+const shan = new Wallet();
+const perera = new Wallet();
+const jon = new Wallet();
+
+lakshan.sendMoney(60, shan.publicKey);
+shan.sendMoney(35, perera.publicKey);
+lakshan.sendMoney(5, jon.publicKey);
+
+console.log(Chain.instance)
 
 
