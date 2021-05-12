@@ -44,8 +44,16 @@ class Chain {
     }
     
     addBlock(transaction: Transaction, senderPublicKey:string,signature:Buffer ){
-        const newBlock = new Block(this.lastblock.hash,transaction);
-        this.chain.push(newBlock);
+        const verifier = crypto.createVerify('SHA256')
+        verifier.update(transaction.toString())
+
+        const isvalid = verifier.verify(senderPublicKey,signature);
+
+        if (isvalid) {
+            
+            const newBlock = new Block(this.lastblock.hash,transaction);
+            this.chain.push(newBlock);
+        }
 
     }
 }

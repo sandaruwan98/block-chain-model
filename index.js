@@ -51,8 +51,13 @@ class Chain {
         return this.chain[this.chain.length - 1];
     }
     addBlock(transaction, senderPublicKey, signature) {
-        const newBlock = new Block(this.lastblock.hash, transaction);
-        this.chain.push(newBlock);
+        const verifier = crypto.createVerify('SHA256');
+        verifier.update(transaction.toString());
+        const isvalid = verifier.verify(senderPublicKey, signature);
+        if (isvalid) {
+            const newBlock = new Block(this.lastblock.hash, transaction);
+            this.chain.push(newBlock);
+        }
     }
 }
 Chain.instance = new Chain();
