@@ -31,9 +31,10 @@ class Transaction {
     }
 }
 class Block {
-    constructor(prevHash, transaction) {
+    constructor(prevHash, transaction, ts = Date.now()) {
         this.prevHash = prevHash;
         this.transaction = transaction;
+        this.ts = ts;
     }
     get hash() {
         const str = JSON.stringify(this);
@@ -42,5 +43,16 @@ class Block {
         return hash.digest('hex');
     }
 }
-const b = new Block("csdcsc", new Transaction(23, "efs", "sdf"));
-console.log(b.hash);
+class Chain {
+    constructor() {
+        this.chain = [new Block('', new Transaction(100, "genesis", "sathoshi"))];
+    }
+    get lastblock() {
+        return this.chain[this.chain.length - 1];
+    }
+    addBlock(transaction, senderPublicKey, signature) {
+        const newBlock = new Block(this.lastblock.hash, transaction);
+        this.chain.push(newBlock);
+    }
+}
+Chain.instance = new Chain();

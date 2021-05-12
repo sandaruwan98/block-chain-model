@@ -16,8 +16,8 @@ class Transaction {
 class Block {
     constructor(
         public prevHash: string,
-        public transaction:Transaction,
-        // public ts = Date.now()
+        public transaction: Transaction,
+        public ts = Date.now()
     ) {}
 
     get hash(){
@@ -28,6 +28,24 @@ class Block {
     }
 }
 
-const b = new Block("csdcsc", new Transaction(23, "efs", "sdf"));
 
-console.log(b.hash);
+class Chain {
+    public static instance = new Chain();
+
+    chain: Block[];
+
+    constructor() {
+        this.chain = [ new Block( '' ,new Transaction(100,"genesis","sathoshi")) ] ;
+    }
+
+    
+    public get lastblock() {
+        return this.chain[this.chain.length-1]
+    }
+    
+    addBlock(transaction: Transaction, senderPublicKey:string,signature:Buffer ){
+        const newBlock = new Block(this.lastblock.hash,transaction);
+        this.chain.push(newBlock);
+        
+    }
+}
